@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: springai-deepseek-demo
+  ai:
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY}
+      chat:
+        options:
+          model: deepseek-v4-flash
+          temperature: 0.7

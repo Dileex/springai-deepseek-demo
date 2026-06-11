@@ -1,0 +1,286 @@
+<project version="4">
+  <component name="BookmarksManager">
+    <option name="groups">
+      <GroupState>
+        <option name="name" value="springai-deepseek-demo" />
+      </GroupState>
+    </option>
+  </component>
+  <component name="FileEditorManager">
+    <leaf ideFingerprint="lraq1tsq74jn" SIDE_TABS_SIZE_LIMIT_KEY="-1" />
+  </component>
+  <component name="FileTypeUsageLocalSummary"><![CDATA[{
+  "data": {
+    "YAML": {
+      "usageCount": 4,
+      "lastUsed": 1780469916997
+    },
+    "XML": {
+      "usageCount": 3,
+      "lastUsed": 1780468512858
+    },
+    "textmate": {
+      "usageCount": 1,
+      "lastUsed": 1780468412204
+    },
+    "JAVA": {
+      "usageCount": 13,
+      "lastUsed": 1780471143137
+    },
+    "CLASS": {
+      "usageCount": 1,
+      "lastUsed": 1780470050982
+    },
+    "PLAIN_TEXT": {
+      "usageCount": 4,
+      "lastUsed": 1780918862293
+    }
+  }
+}]]></component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/pom.xml" />
+      <option value="$PROJECT_DIR$/src/main/resources/application.yaml" />
+      <option value="$PROJECT_DIR$/src/main/java/com/example/springaideepseekdemo/controller/ChatController.java" />
+    </changedPaths>
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="LanguageUsageStatistics">
+    <language id="JAVA">
+      <summary usageCount="13" lastUsage="1780471143137" />
+    </language>
+    <language id="TEXT">
+      <summary usageCount="4" lastUsage="1780918862293" />
+    </language>
+    <language id="XML">
+      <summary usageCount="3" lastUsage="1780468512858" />
+    </language>
+    <language id="textmate">
+      <summary usageCount="1" lastUsage="1780468412204" />
+    </language>
+    <language id="yaml">
+      <summary usageCount="4" lastUsage="1780469916997" />
+    </language>
+  </component>
+  <component name="MavenProjectNavigator">
+    <option name="groupStructurally" value="true" />
+    <treeState>
+      <expand />
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" />
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="springai-deepseek-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="b85a3e1f:ScratchTreeStructureProvider$MyProjectNode" />
+            </path>
+            <path>
+              <item name="springai-deepseek-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="b85a3e1f:ScratchTreeStructureProvider$MyProjectNode" />
+              <item name="Extensions" type="783a8411:ScratchTreeStructureProvider$MyRootNode" />
+            </path>
+            <path>
+              <item name="springai-deepseek-demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="b85a3e1f:ScratchTreeStructureProvider$MyProjectNode" />
+              <item name="Extensions" type="783a8411:ScratchTreeStructureProvider$MyRootNode" />
+              <item name="dir{file:///Users/dilee/Library/Application Support/JetBrains/IntelliJIdea2024.1/extensions/com.intellij.database}" type="18b656a9:ScratchTreeStructureProvider$MyRootNode$1$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="RunConfigurationStartHistory">
+    <history>
+      <element setting="Spring Boot.SpringaiDeepseekDemoApplication" />
+    </history>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="TerminalArrangementManager">
+    <option name="myTabStates">
+      <TerminalTabState tabName="Local" currentWorkingDirectory="$PROJECT_DIR$">
+        <shellCommand>
+          <arg value="/bin/zsh" />
+          <arg value="--login" />
+          <arg value="-i" />
+        </shellCommand>
+      </TerminalTabState>
+    </option>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="13112000" />
+  </component>
+  <component name="ToolWindowManager">
+    <layoutV2>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33035713" />
+      <window_info id="Commit" order="1" weight="0.25" />
+      <window_info id="Welcome to GitHub Copilot" order="2" />
+      <window_info id="Structure" order="3" side_tool="true" weight="0.33035713" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.3304862" />
+      <window_info anchor="bottom" id="Problems" order="1" />
+      <window_info anchor="bottom" id="Problems View" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.50131404" />
+      <window_info anchor="bottom" id="Services" order="4" weight="0.3304862" />
+      <window_info anchor="bottom" id="Run" order="5" visible="true" weight="0.50131404" />
+      <window_info anchor="bottom" id="Build" order="6" weight="0.3304862" />
+      <window_info anchor="bottom" id="Find" order="7" show_stripe_button="false" weight="0.3304862" />
+      <window_info anchor="bottom" id="Debug" order="8" weight="0.6248357" />
+      <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
+      <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
+      <window_info anchor="right" id="Database" order="2" weight="0.25" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
+      <window_info anchor="right" id="github.copilotToolWindow" order="4" />
+      <window_info active="true" anchor="right" id="Maven" order="5" visible="true" weight="0.2282143" />
+      <window_info anchor="right" id="GitHub Copilot Chat" order="6" />
+      <unified_weights bottom="0.50131404" left="0.33035713" right="0.2282143" />
+    </layoutV2>
+    <recentWindows>
+      <value>Project</value>
+      <value>Maven</value>
+      <value>Run</value>
+      <value>Terminal</value>
+      <value>Debug</value>
+      <value>Build</value>
+      <value>Find</value>
+      <value>Services</value>
+      <value>Structure</value>
+      <value>Version Control</value>
+    </recentWindows>
+  </component>
+  <component name="UnlinkedProjectNotification">
+    <option name="disabledNotifications">
+      <set>
+        <option value="MAVEN" />
+      </set>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="320" y="86" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1780918783654">
+      <screen x="0" y="25" width="1440" height="813" />
+    </state>
+    <state x="320" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780470691986" />
+    <state x="320" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1440.801@0.25.1440.801" timestamp="1780469860862" />
+    <state x="320" y="86" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1440.813@0.25.1440.813" timestamp="1780918783654" />
+    <state width="1318" height="339" key="GridCell.Tab.0.bottom" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.0.bottom/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.0.bottom/0.25.1440.801@0.25.1440.801" timestamp="1780470232636" />
+    <state width="1318" height="339" key="GridCell.Tab.0.center" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.0.center/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.0.center/0.25.1440.801@0.25.1440.801" timestamp="1780470232636" />
+    <state width="1318" height="339" key="GridCell.Tab.0.left" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.0.left/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.0.left/0.25.1440.801@0.25.1440.801" timestamp="1780470232636" />
+    <state width="1318" height="339" key="GridCell.Tab.0.right" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.0.right/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.0.right/0.25.1440.801@0.25.1440.801" timestamp="1780470232636" />
+    <state width="1318" height="339" key="GridCell.Tab.1.bottom" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.1.bottom/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.1.bottom/0.25.1440.801@0.25.1440.801" timestamp="1780470232557" />
+    <state width="1318" height="339" key="GridCell.Tab.1.center" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.1.center/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.1.center/0.25.1440.801@0.25.1440.801" timestamp="1780470232556" />
+    <state width="1318" height="339" key="GridCell.Tab.1.left" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.1.left/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.1.left/0.25.1440.801@0.25.1440.801" timestamp="1780470232556" />
+    <state width="1318" height="339" key="GridCell.Tab.1.right" timestamp="1780471157402">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="339" key="GridCell.Tab.1.right/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780471157402" />
+    <state width="1318" height="433" key="GridCell.Tab.1.right/0.25.1440.801@0.25.1440.801" timestamp="1780470232556" />
+    <state width="1318" height="433" key="GridCell.Tab.2.bottom" timestamp="1780470550454">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="433" key="GridCell.Tab.2.bottom/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780470550454" />
+    <state width="1318" height="433" key="GridCell.Tab.2.bottom/0.25.1440.801@0.25.1440.801" timestamp="1780470232557" />
+    <state width="1318" height="433" key="GridCell.Tab.2.center" timestamp="1780470550454">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="433" key="GridCell.Tab.2.center/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780470550454" />
+    <state width="1318" height="433" key="GridCell.Tab.2.center/0.25.1440.801@0.25.1440.801" timestamp="1780470232557" />
+    <state width="1318" height="433" key="GridCell.Tab.2.left" timestamp="1780470550454">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="433" key="GridCell.Tab.2.left/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780470550454" />
+    <state width="1318" height="433" key="GridCell.Tab.2.left/0.25.1440.801@0.25.1440.801" timestamp="1780470232557" />
+    <state width="1318" height="433" key="GridCell.Tab.2.right" timestamp="1780470550454">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state width="1318" height="433" key="GridCell.Tab.2.right/0.25.1440.801/-1080.-1055.1920.1055@0.25.1440.801" timestamp="1780470550454" />
+    <state width="1318" height="433" key="GridCell.Tab.2.right/0.25.1440.801@0.25.1440.801" timestamp="1780470232557" />
+    <state x="308" y="167" key="IDE.errors.dialog" timestamp="1780468199503">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state x="308" y="167" key="IDE.errors.dialog/0.25.1440.801@0.25.1440.801" timestamp="1780468199503" />
+    <state x="1050" y="629" width="350" height="138" key="ProcessPopupWindow" timestamp="1780468819279">
+      <screen x="0" y="25" width="1440" height="801" />
+    </state>
+    <state x="1050" y="629" width="350" height="138" key="ProcessPopupWindow/0.25.1440.801@0.25.1440.801" timestamp="1780468819279" />
+    <state x="221" y="64" key="SettingsEditor" timestamp="1780904614260">
+      <screen x="0" y="25" width="1440" height="804" />
+    </state>
+    <state x="221" y="64" key="SettingsEditor/0.25.1440.801@0.25.1440.801" timestamp="1780470066913" />
+    <state x="221" y="64" key="SettingsEditor/0.25.1440.804@0.25.1440.804" timestamp="1780904614260" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/mvnw.cmd" preview="true" />
+    <entry file="file://$PROJECT_DIR$/pom.xml" preview="true" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/springaideepseekdemo/SpringaiDeepseekDemoApplication.java" preview="true" />
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yaml" preview="true" />
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/ai/spring-ai-autoconfigure-model-deepseek/1.1.7/spring-ai-autoconfigure-model-deepseek-1.1.7.jar!/org/springframework/ai/model/deepseek/autoconfigure/DeepSeekChatAutoConfiguration.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#5001#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/example/springaideepseekdemo/controller/ChatController.java" />
+    <entry file="file://$PROJECT_DIR$/.env.example" preview="true">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
