@@ -1,10 +1,29 @@
 HELP.md
 target/
 .env
-.codex-jetbrains-global-backup-*/
+.env.*
+!.env.example
+.DS_Store
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+### Local config / secrets ###
+application-local.yml
+application-local.yaml
+application-*.local.yml
+application-*.local.yaml
+*.pem
+*.key
+*.p12
+*.jks
+
+### Logs ###
+logs/
+*.log
+*.pid
+*.seed
+*.tmp
 
 ### STS ###
 .apt_generated
