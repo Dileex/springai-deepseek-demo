@@ -17,6 +17,20 @@ tag:    v003-tool-calling
 export DEEPSEEK_API_KEY=你的 DeepSeek API Key
 ```
 
+如果你用 IDEA 直接运行项目，不需要在代码里写 Key。
+
+打开右上角运行配置：
+
+```text
+Edit Configurations...
+→ 选择 SpringaiDeepseekDemoApplication
+→ Environment variables
+→ 新增 DEEPSEEK_API_KEY=你的 DeepSeek API Key
+→ Apply / OK
+```
+
+`application.yaml` 里的 `${DEEPSEEK_API_KEY}` 会从这里读取。
+
 当前示例沿用项目里的 DeepSeek 配置：
 
 ```yaml
@@ -40,14 +54,8 @@ spring:
 ## 测试接口
 
 ```bash
-curl "http://localhost:8080/tool-calling/order-logistics"
-```
-
-也可以自定义问题：
-
-```bash
-curl --get "http://localhost:8080/tool-calling/order-logistics" \
-  --data-urlencode "question=帮我查一下订单 12345 的物流信息"
+curl --get "http://localhost:8080/ask" \
+  --data-urlencode "question=帮我查一下订单12345的物流"
 ```
 
 如果 Tool Calling 生效，模型会请求调用 `queryOrderLogistics` 工具，再基于工具返回结果回答。
@@ -58,7 +66,7 @@ curl --get "http://localhost:8080/tool-calling/order-logistics" \
 src/main/java/com/example/springaideepseekdemo/toolcalling/OrderTools.java
     -> 使用 @Tool 和 @ToolParam 暴露订单物流查询工具
 
-src/main/java/com/example/springaideepseekdemo/toolcalling/ToolCallingController.java
+src/main/java/com/example/springaideepseekdemo/controller/OrderController.java
     -> 使用 .tools(orderTools) 把工具注册到本次 ChatClient 调用
 
 src/main/resources/application.yaml
