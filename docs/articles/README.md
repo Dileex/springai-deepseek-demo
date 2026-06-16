@@ -13,18 +13,12 @@ tag:    v编号-主题
 当前文章：
 
 ```text
-001 DeepSeek Quickstart
-branch: article/001-deepseek-quickstart
-tag:    v001-deepseek-quickstart
+006 Prompt
+branch: article/006-prompt
 ```
 
-后续建议：
+对应公众号文章：
 
 ```text
-article/002-core-architecture
-article/003-advisor
-article/004-memory
-article/005-rag
-article/006-tool-calling
-article/007-mcp
+《Spring AI Prompt 入门：别再把所有内容都塞进 user 了》
 ```
