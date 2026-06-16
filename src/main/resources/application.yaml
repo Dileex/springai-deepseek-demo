@@ -20,4 +20,8 @@ spring:
               args:
                 - -y
                 - "@modelcontextprotocol/server-filesystem"
-                - /tmp/spring-ai-mcp-demo
+                - /private/tmp/spring-ai-mcp-demo
+
+logging:
+  level:
+    io.netty.resolver.dns.DnsServerAddressStreamProviders: OFF

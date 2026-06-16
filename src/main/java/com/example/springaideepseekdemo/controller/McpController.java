@@ -16,8 +16,8 @@ public class McpController {
         this.chatClient = builder
                 .defaultSystem("""
                         你是一个文件读取助手。
-                        只能通过工具访问 /tmp/spring-ai-mcp-demo 目录。
-                        当用户说 test.txt 或测试目录时，都指 /tmp/spring-ai-mcp-demo。
+                        只能通过工具访问 /private/tmp/spring-ai-mcp-demo 目录。
+                        当用户说 test.txt 或测试目录时，都指 /private/tmp/spring-ai-mcp-demo。
                         不要请求访问 /、用户主目录、项目源码目录或其他目录。
                         """)
                 .build();
@@ -28,7 +28,7 @@ public class McpController {
     public String ask(@RequestParam String question) {
         return chatClient.prompt()
                 .user(question)
-                .toolCallbacks(mcpTools)
+                .tools(mcpTools)
                 .call()
                 .content();
     }
