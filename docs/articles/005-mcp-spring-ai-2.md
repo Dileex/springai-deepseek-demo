@@ -52,10 +52,17 @@ macOS 上偶尔会看到 Netty DNS native resolver 的提示日志。它不是 M
 
 ## 测试接口
 
-读取测试文件：
+一次性返回：
 
 ```bash
 curl --get "http://localhost:8080/ask" \
+  --data-urlencode "question=帮我读取 /private/tmp/spring-ai-mcp-demo/test.txt 的内容"
+```
+
+流式返回：
+
+```bash
+curl -N --get "http://localhost:8080/stream" \
   --data-urlencode "question=帮我读取 /private/tmp/spring-ai-mcp-demo/test.txt 的内容"
 ```
 
@@ -79,6 +86,7 @@ src/main/resources/application.yaml
 
 src/main/java/com/example/springaideepseekdemo/controller/McpController.java
     -> 注入 ToolCallbackProvider，并通过 .tools(mcpTools) 注册 MCP 工具
+    -> /ask 一次性返回，/stream 流式返回
 ```
 
 ## IDEA 配置 DeepSeek Key
