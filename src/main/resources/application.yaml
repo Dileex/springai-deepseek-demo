@@ -7,9 +7,8 @@ spring:
     deepseek:
       api-key: ${DEEPSEEK_API_KEY}
       chat:
-        options:
-          model: deepseek-v4-flash
-          temperature: 0.2
+        model: deepseek-v4-flash
+        temperature: 0.2
     mcp:
       client:
         type: SYNC
