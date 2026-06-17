@@ -20,5 +20,5 @@ branch: article/006-prompt
 对应公众号文章：
 
 ```text
-《Spring AI Prompt 入门：别再把所有内容都塞进 user 了》
+《Spring AI 2.0.0 Prompt 入门：别再把所有内容都塞进 user 了》
 ```
