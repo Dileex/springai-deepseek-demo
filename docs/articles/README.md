@@ -13,8 +13,8 @@ tag:    v编号-主题
 当前文章：
 
 ```text
-007 Structured Output
-branch: article/007-structured-output
+008 Structured Output
+branch: article/008-structured-output
 ```
 
 对应公众号文章：

@@ -1,4 +1,4 @@
-# 007 Structured Output
+# 008 Structured Output
 
 对应文章：
 
@@ -7,7 +7,7 @@
 代码版本：
 
 ```text
-branch: article/007-structured-output
+branch: article/008-structured-output
 Spring Boot: 4.1.0
 Spring AI: 2.0.0
 Model: deepseek-v4-flash
