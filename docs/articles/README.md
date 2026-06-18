@@ -13,12 +13,12 @@ tag:    v编号-主题
 当前文章：
 
 ```text
-006 Prompt
-branch: article/006-prompt
+007 Structured Output
+branch: article/007-structured-output
 ```
 
 对应公众号文章：
 
 ```text
-《Spring AI 2.0.0 Prompt 入门：别再把所有内容都塞进 user 了》
+《Spring AI 结构化输出：别再让模型随便吐一段文本了》
 ```
