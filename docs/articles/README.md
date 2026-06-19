@@ -20,5 +20,5 @@ branch: article/007-skill-demo
 对应公众号文章：
 
 ```text
-《Spring AI 2.0.0 怎么接 Skill：基于 SkillsTool 加载 SKILL.md》
+《Spring AI 2.0.0 接 Skill：不是多写一段 Prompt，而是让 Agent 按流程干活》
 ```

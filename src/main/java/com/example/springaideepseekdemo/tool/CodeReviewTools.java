@@ -1,5 +1,7 @@
 package com.example.springaideepseekdemo.tool;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +11,12 @@ import java.util.List;
 @Component
 public class CodeReviewTools {
 
+    private static final Logger log = LoggerFactory.getLogger(CodeReviewTools.class);
+
     @Tool(description = "按照 code-review-skill 的审查流程审查 Java 代码。参数 code 是待审查代码，返回 Markdown 格式审查报告。")
     public String reviewJavaCode(String code) {
+        log.info("reviewJavaCode tool called");
+
         String source = code == null ? "" : code.strip();
         if (source.isBlank()) {
             return "请提供需要审查的 Java 代码。";
