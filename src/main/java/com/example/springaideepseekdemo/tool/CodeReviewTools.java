@@ -27,13 +27,20 @@ public class CodeReviewTools {
         report.append("""
                 # 代码审查报告
 
-                审查 Skill：code-review-skill / references/checklist.md
+                审查依据：code-review-skill / references/checklist.md
+
+                ## 审查路径
+
+                - Step 1：识别代码场景
+                - Step 2：按风险优先级检查
+                - Step 3：调用 reviewJavaCode 工具执行基础检查
+                - Step 4：按固定结构输出报告
 
                 ## 总体结论
 
                 """);
         if (findings.isEmpty()) {
-            report.append("这段代码没有命中 Demo 内置的高风险规则。仍建议补充单元测试，并结合业务上下文继续人工确认。\n\n");
+            report.append("这段代码没有命中当前内置的高风险规则。仍建议补充单元测试，并结合业务上下文继续人工确认。\n\n");
         } else {
             report.append("这段代码发现 ").append(findings.size()).append(" 个需要关注的问题，建议先处理高风险项。\n\n");
         }

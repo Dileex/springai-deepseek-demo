@@ -1,5 +1,6 @@
 HELP.md
 target/
+output/
 .env
 .codex-jetbrains-global-backup-*/
 .mvn/wrapper/maven-wrapper.jar
