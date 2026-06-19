@@ -2,7 +2,7 @@
 
 对应文章：
 
-`Spring AI 2.0.0 怎么接 Skill：让 Agent 按代码审查流程工作`
+`Spring AI 2.0.0 接 Skill：不是多写一段 Prompt，而是让 Agent 按流程干活`
 
 ## 运行环境
 
@@ -15,7 +15,7 @@
 
 这个分支演示 Spring AI 2.0.0 怎么通过 `SkillsTool` 加载本地 `SKILL.md`，再把代码审查工具接入 `ChatClient.tools(...)`。
 
-需要注意：`SkillsTool` 负责把 `SKILL.md` 交给模型，不会自动替你审查代码。真正执行审查动作的，是应用侧提供的 `CodeReviewTools`。
+需要注意：`SkillsTool` 负责把 `SKILL.md` 交给模型，不会自动替你审查代码。真正执行基础检查的，是应用侧提供的 `CodeReviewTools`。
 
 Prompt 放在 `application.yaml`：
 
@@ -47,7 +47,7 @@ Run/Debug Configurations
 
 ## Spring AI 调用 Skill
 
-这个接口会经过模型，让模型先加载 `code-review-skill`，再调用 Java Tool 输出审查报告：
+这个接口会经过模型，让模型先加载 `code-review-skill`，再决定是否调用 Java Tool 输出审查报告：
 
 ```bash
 curl -X POST "http://localhost:8080/skills/code-review/run" \
@@ -65,9 +65,9 @@ curl -N -X POST "http://localhost:8080/skills/code-review/run/stream" \
   --data-binary 'public String getName(User user) { return user.getName(); }'
 ```
 
-## 直连审查工具
+## 本地兜底验证
 
-如果只是想先验证 Java Tool 的审查结果，可以不经过模型，直接调用：
+如果只是想先验证 Java Tool 能不能产出基础报告，可以不经过模型，直接调用：
 
 ```bash
 curl -X POST "http://localhost:8080/skills/code-review/review" \
@@ -75,4 +75,4 @@ curl -X POST "http://localhost:8080/skills/code-review/review" \
   --data-binary 'public String getName(User user) { return user.getName(); }'
 ```
 
-这个接口主要用于本地兜底测试，不代表完整的 `Skill + Tool Calling` 链路。
+这个接口只用于本地兜底验证，不代表完整的 `Skill + Tool Calling` 链路。主路径还是 `/skills/code-review/run`。
