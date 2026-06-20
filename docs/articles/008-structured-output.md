@@ -63,7 +63,7 @@ pom.xml
     -> Spring Boot、Spring AI BOM、DeepSeek starter、Web 依赖
 
 src/main/resources/application.yaml
-    -> spring.ai.deepseek.chat.model、temperature 配置
+    -> spring.ai.deepseek.chat.model、temperature、代码审查提示词配置
 
 src/main/java/com/example/springaideepseekdemo/dto/CodeReviewResult.java
     -> 结构化输出对象
