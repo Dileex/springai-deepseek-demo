@@ -50,6 +50,8 @@ curl -X POST "http://localhost:8080/evaluation/rule" \
   -d '{}'
 ```
 
+这里的空 JSON 不是评估空内容，而是使用 Demo 里内置的默认坏答案，方便直接看到失败结果。
+
 预期结果：
 
 ```json
@@ -82,4 +84,36 @@ curl -X POST "http://localhost:8080/evaluation/fact-check" \
   -d '{}'
 ```
 
-注意：`FactCheckingEvaluator` 本质上也是一次模型调用，适合放在集成测试、回归评估或离线评测流程里，不适合替代所有规则校验。
+这里同样会使用 Demo 里内置的默认坏答案。
+
+默认坏答案会返回类似：
+
+```json
+{
+  "pass": false,
+  "score": 0.0,
+  "feedback": "",
+  "metadata": {}
+}
+```
+
+换成好答案：
+
+```bash
+curl -X POST "http://localhost:8080/evaluation/fact-check" \
+  -H "Content-Type: application/json" \
+  -d '{"answer":"不能取消。订单进入仓库拣货流程后会返回 ORDER_LOCKED，表示订单已锁定。"}'
+```
+
+会返回类似：
+
+```json
+{
+  "pass": true,
+  "score": 0.0,
+  "feedback": "",
+  "metadata": {}
+}
+```
+
+注意：`FactCheckingEvaluator` 本质上也是一次模型调用，适合放在集成测试、回归评估或离线评测流程里，不适合替代所有规则校验。它默认主要看 `pass`，不会自动返回中文 `feedback`；这里的 `score=0.0` 也不是细粒度评分。
