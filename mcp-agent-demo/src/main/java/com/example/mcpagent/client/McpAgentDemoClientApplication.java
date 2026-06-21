@@ -93,17 +93,17 @@ public class McpAgentDemoClientApplication {
 			socket.connect(new InetSocketAddress(uri.getHost(), port), 1500);
 		}
 		catch (Exception ex) {
-			System.err.println("""
-					
-					MCP Server 连接不上：%s
-					
-					请先启动服务端：
-					  cd /Users/dilee/Projects/springai-deepseek-demo
-					  ./mvnw spring-boot:run
-					
-					如果服务端换了端口，例如 18080，运行 Client 时加上：
-					  --spring.ai.mcp.client.streamable-http.connections.travel-expense.url=http://localhost:18080
-					""".formatted(serverUrl));
+			System.err.printf("""
+
+                    MCP Server 连接不上：%s
+
+                    请先启动服务端：
+                    cd /Users/dilee/Projects/springai-deepseek-demo
+                    ./mvnw spring-boot:run
+
+                    如果服务端换了端口，例如 18080，运行 Client 时加上：
+                    --spring.ai.mcp.client.streamable-http.connections.travel-expense.url=http://localhost:18080
+                    %n""", serverUrl);
 			System.exit(2);
 		}
 	}

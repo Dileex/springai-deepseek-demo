@@ -1,9 +1,23 @@
 spring:
   application:
-    name: springai-deepseek-demo
+    name: travel-expense-mcp-server
   ai:
-    deepseek:
-      api-key: ${DEEPSEEK_API_KEY:dummy-key}
-      chat:
-        model: deepseek-v4-flash
-        temperature: 0.2
+    mcp:
+      client:
+        enabled: false
+      server:
+        name: travel-expense-mcp-server
+        version: 1.0.0
+        type: SYNC
+        protocol: STREAMABLE
+        instructions: |
+          这是一个差旅报销 MCP Server。
+          它只用于查询报销政策、检查材料和判断是否需要审批。
+          不要用它执行真实付款、审批通过或权限变更。
+        capabilities:
+          tool: true
+          resource: false
+          prompt: false
+          completion: false
+        annotation-scanner:
+          enabled: true

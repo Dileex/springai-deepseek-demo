@@ -1,65 +1,98 @@
-# Spring AI MCP Server Demo
+# Spring AI MCP Server + Agent Client Demo
 
-这个仓库按文章分支保存 Spring AI 示例代码。
-
-当前示例对应：
-
-`Spring Boot 4.1.0 实现 MCP Server：让 Java 方法变成 Agent 可调用工具`
-
-## 这个示例做什么
-
-用 Spring Boot 4.1.0 + Spring AI 2.0.0 暴露一个 Streamable HTTP MCP Server。
-
-示例把 Java 方法：
+这个仓库对应文章：
 
 ```text
-TravelExpenseTools#checkLodgingPolicy
+Spring Boot 4.1.0 实现 MCP Server：让 Java 方法变成 Agent 可调用工具
 ```
 
-注册成 MCP Tool：
+目录分工：
+
+```text
+src/              Spring Boot 4.1.0 MCP Server
+mcp-agent-demo/   Spring AI 2.0.0 Agent Client
+```
+
+根项目把 Java 方法 `checkLodgingPolicy` 暴露成 MCP Tool：
 
 ```text
 check_lodging_policy
 ```
 
-MCP Client 连接 `http://localhost:8080/mcp` 后，可以通过 `tools/list` 发现工具，再通过 `tools/call` 调用工具。
+`mcp-agent-demo` 只负责连接这个 MCP Server，把远端工具转成 `ToolCallbackProvider`，再通过：
 
-## 运行
+```java
+chatClient.prompt("...")
+    .tools(toolCallbackProvider)
+    .call()
+    .content();
+```
+
+让 Agent 侧使用工具。
+
+## 1. 启动 MCP Server
 
 ```bash
+cd /Users/dilee/Projects/springai-deepseek-demo
 ./mvnw -DskipTests compile
 ./mvnw spring-boot:run
 ```
 
-这个示例不需要配置大模型 API Key。
-
-MCP Server 只负责暴露工具；模型和 Agent 什么时候调用工具，是 MCP Client 侧的事情。
-
-## 验证
-
-支持 Streamable HTTP 的 MCP Client 可以连接：
+默认 endpoint：
 
 ```text
 http://localhost:8080/mcp
 ```
 
-工具参数示例：
+如果 `8080` 被占用：
 
-```json
-{
-  "city": "上海",
-  "amount": 720,
-  "hasHotelInvoice": true,
-  "hasItinerary": true
-}
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=18080
 ```
 
-预期结果里会包含：
+## 2. 启动 Agent Client
 
-```json
-{
-  "decision": "MANAGER_APPROVAL_REQUIRED",
-  "overLimit": true,
-  "missingMaterials": false
-}
+默认连接 `http://localhost:8080/mcp`：
+
+```bash
+cd /Users/dilee/Projects/springai-deepseek-demo/mcp-agent-demo
+./mvnw -DskipTests compile
+./mvnw spring-boot:run \
+  -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication
 ```
+
+如果 Server 跑在 `18080`：
+
+```bash
+./mvnw spring-boot:run \
+  -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication \
+  -Dspring-boot.run.arguments=--spring.ai.mcp.client.streamable-http.connections.travel-expense.url=http://localhost:18080
+```
+
+正常输出会包含：
+
+```text
+Spring AI tools: [check_lodging_policy]
+Spring AI agent result: 我已经通过 MCP 工具 check_lodging_policy 查询了差旅住宿规则。
+```
+
+最终回答里会包含：
+
+```text
+MANAGER_APPROVAL_REQUIRED
+```
+
+这个示例不需要配置大模型 API Key。`mcp-agent-demo` 里的 `TravelExpenseAgentModel` 是本地模拟模型，只负责稳定触发 Spring AI 的 Tool Calling 流程，方便验证 MCP Client、`ToolCallbackProvider` 和 `ChatClient.tools(...)` 这条链路。
+
+## IDEA 打开方式
+
+如果在 IDEA 里看到 `mcp-agent-demo` 下的 `org.springframework.ai.chat.client` 等包报红，通常不是代码问题，而是子项目 Maven 没有导入。
+
+确认 Maven 面板里有两个项目：
+
+```text
+springai-deepseek-demo
+mcp-agent-demo
+```
+
+如果只看到根项目，右键 `mcp-agent-demo/pom.xml`，选择 `Add as Maven Project`，或者在 Maven 面板点击 Reload All Maven Projects。
