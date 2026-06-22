@@ -1,9 +1,12 @@
 spring:
   application:
-    name: springai-deepseek-demo
-  ai:
-    deepseek:
-      api-key: ${DEEPSEEK_API_KEY:dummy-key}
-      chat:
-        model: deepseek-v4-flash
-        temperature: 0.2
+    name: spring-ai-observability-demo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  observations:
+    key-values:
+      application: spring-ai-observability-demo
