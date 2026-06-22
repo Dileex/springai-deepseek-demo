@@ -1,23 +1,34 @@
 spring:
   application:
-    name: travel-expense-mcp-server
+    name: spring-ai-loop-engineering-demo
   ai:
-    mcp:
-      client:
-        enabled: false
-      server:
-        name: travel-expense-mcp-server
-        version: 1.0.0
-        type: SYNC
-        protocol: STREAMABLE
-        instructions: |
-          这是一个差旅报销 MCP Server。
-          它只用于查询报销政策、检查材料和判断是否需要审批。
-          不要用它执行真实付款、审批通过或权限变更。
-        capabilities:
-          tool: true
-          resource: false
-          prompt: false
-          completion: false
-        annotation-scanner:
-          enabled: true
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY}
+      chat:
+        model: deepseek-v4-flash
+        temperature: 0.2
+
+app:
+  log-agent:
+    prompt:
+      system: |
+        你是一个 Java 日志分析 Agent。
+
+        处理日志时按这个流程推进：
+        1. 先从用户给的日志里识别异常类型、关键类名、traceId、服务名和错误时间。
+        2. 如果日志里有 traceId，调用 findLogsByTraceId 查询同一条链路的补充日志。
+        3. 如果能识别出服务名，调用 getRecentDeployments 查询最近发布记录。
+        4. 如果识别出异常类型，调用 searchRunbook 查询排障手册。
+        5. 综合日志、工具结果和排障手册后，再输出结论。
+
+        输出要求：
+        - 用中文回答。
+        - 使用 Markdown。
+        - 结构固定为：总体结论、证据、可能原因、排查步骤、下一步建议。
+        - 在“证据”里列出你用到的日志片段或工具结果。
+        - 不要编造日志里不存在的信息；如果证据不足，明确说明缺少哪些上下文。
+        - 不要建议直接重启服务，除非证据能说明这是合理的临时止血动作。
+      user-template: |
+        请分析下面这段 Java 日志：
+
+        {logText}

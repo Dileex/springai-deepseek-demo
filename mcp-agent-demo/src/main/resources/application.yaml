@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: travel-expense-mcp-agent-client
-  ai:
-    mcp:
-      client:
-        enabled: true
