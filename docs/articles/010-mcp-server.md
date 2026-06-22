@@ -31,8 +31,21 @@ Java 方法
 
 - JDK 17+
 - Maven
+- DeepSeek API Key
 
-这个 Demo 不需要配置大模型 API Key。`mcp-agent-demo` 里的 `TravelExpenseAgentModel` 是本地模拟模型，只用于稳定触发工具调用流程。
+MCP Server 不需要模型 API Key，它只负责暴露工具。
+
+Agent Client 使用 DeepSeek：
+
+```text
+deepseek-v4-flash
+```
+
+启动 Client 前需要配置：
+
+```bash
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
+```
 
 ## 1. 启动 MCP Server
 
@@ -60,6 +73,7 @@ http://localhost:8080/mcp
 
 ```bash
 cd /Users/dilee/Projects/springai-deepseek-demo/mcp-agent-demo
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
 ./mvnw -DskipTests compile
 ./mvnw spring-boot:run \
   -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication

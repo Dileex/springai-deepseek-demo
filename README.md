@@ -30,6 +30,18 @@ chatClient.prompt("...")
 
 让 Agent 侧使用工具。
 
+Client 侧使用 DeepSeek：
+
+```text
+deepseek-v4-flash
+```
+
+所以启动 Client 前需要配置：
+
+```bash
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
+```
+
 ## 1. 启动 MCP Server
 
 ```bash
@@ -56,6 +68,7 @@ http://localhost:8080/mcp
 
 ```bash
 cd /Users/dilee/Projects/springai-deepseek-demo/mcp-agent-demo
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
 ./mvnw -DskipTests compile
 ./mvnw spring-boot:run \
   -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication
@@ -82,7 +95,11 @@ Spring AI agent result: 我已经通过 MCP 工具 check_lodging_policy 查询�
 MANAGER_APPROVAL_REQUIRED
 ```
 
-这个示例不需要配置大模型 API Key。`mcp-agent-demo` 里的 `TravelExpenseAgentModel` 是本地模拟模型，只负责稳定触发 Spring AI 的 Tool Calling 流程，方便验证 MCP Client、`ToolCallbackProvider` 和 `ChatClient.tools(...)` 这条链路。
+这里不是本地模拟模型。
+
+MCP Server 不需要模型 API Key，它只暴露工具。
+
+`mcp-agent-demo` 作为 Agent Client，会用 DeepSeek 调用模型，再通过 `ChatClient.tools(...)` 触发远端 MCP Tool。
 
 ## IDEA 打开方式
 

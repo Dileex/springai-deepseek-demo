@@ -7,22 +7,15 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.mcp.client.common.autoconfigure.McpClientAutoConfiguration;
-import org.springframework.ai.mcp.client.common.autoconfigure.McpToolCallbackAutoConfiguration;
-import org.springframework.ai.mcp.client.httpclient.autoconfigure.StreamableHttpHttpClientTransportAutoConfiguration;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootConfiguration
-@ImportAutoConfiguration({ StreamableHttpHttpClientTransportAutoConfiguration.class, McpClientAutoConfiguration.class,
-		McpToolCallbackAutoConfiguration.class })
+@SpringBootApplication
 public class McpAgentDemoClientApplication {
 
 	private static final String MCP_SERVER_URL_PROPERTY =
@@ -36,30 +29,20 @@ public class McpAgentDemoClientApplication {
 
 		SpringApplication application = new SpringApplication(McpAgentDemoClientApplication.class);
 		application.setWebApplicationType(WebApplicationType.NONE);
-		application.setDefaultProperties(Map.of(
-				"spring.config.name", "mcp-agent-demo-client",
-				"spring.application.name", "travel-expense-mcp-agent-client",
-				"spring.ai.mcp.client.enabled", "true",
-				"spring.ai.mcp.client.type", "SYNC",
-				"spring.ai.mcp.client.toolcallback.enabled", "true",
-				MCP_SERVER_URL_PROPERTY, DEFAULT_MCP_SERVER_URL,
-				"spring.ai.mcp.client.streamable-http.connections.travel-expense.endpoint", "/mcp"));
+		application.setDefaultProperties(Map.of(MCP_SERVER_URL_PROPERTY, serverUrl));
 		application.run(args);
 	}
 
 	@Bean
-	ChatModel chatModel() {
-		return new TravelExpenseAgentModel();
-	}
-
-	@Bean
-	ChatClient chatClient(ChatModel chatModel) {
-		return ChatClient.create(chatModel);
-	}
-
-	@Bean
-	CommandLineRunner runAgent(ChatClient chatClient, ToolCallbackProvider toolCallbackProvider) {
+	CommandLineRunner runAgent(ChatClient.Builder builder, ToolCallbackProvider toolCallbackProvider) {
 		return args -> {
+			ChatClient chatClient = builder
+				.defaultSystem("""
+						你是一个差旅报销助手。
+						回答前优先使用可用工具查询规则，不要自己编造报销政策。
+						""")
+				.build();
+
 			ToolCallback[] tools = toolCallbackProvider.getToolCallbacks();
 			System.out.println("Spring AI tools: " + Arrays.stream(tools)
 				.map(tool -> tool.getToolDefinition().name())

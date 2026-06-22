@@ -2,6 +2,19 @@ spring:
   application:
     name: travel-expense-mcp-agent-client
   ai:
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY}
+      chat:
+        model: deepseek-v4-flash
+        temperature: 0.2
     mcp:
       client:
         enabled: true
+        type: SYNC
+        toolcallback:
+          enabled: true
+        streamable-http:
+          connections:
+            travel-expense:
+              url: http://localhost:8080
+              endpoint: /mcp

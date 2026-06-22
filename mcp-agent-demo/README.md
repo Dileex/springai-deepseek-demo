@@ -18,7 +18,21 @@ ChatClient + tools(...)
 Agent 调用 MCP Tool 得到最终回答
 ```
 
-这个示例不需要配置大模型 API Key。`TravelExpenseAgentModel` 是一个本地模拟模型，只用于稳定触发 Spring AI 的 Tool Calling 流程，验证远端 MCP Tool 能被 Agent 侧通过 `ChatClient.tools(...)` 使用。
+Client 侧使用 DeepSeek：
+
+```text
+deepseek-v4-flash
+```
+
+启动 Client 前需要配置：
+
+```bash
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
+```
+
+MCP Server 不需要模型 API Key，它只负责暴露工具。
+
+`mcp-agent-demo` 会用 DeepSeek 调用模型，并把远端 MCP Tool 交给 `ChatClient.tools(...)`。
 
 ## 1. 先启动 MCP Server
 
@@ -45,6 +59,7 @@ http://localhost:8080/mcp
 
 ```bash
 cd /Users/dilee/Projects/springai-deepseek-demo/mcp-agent-demo
+export DEEPSEEK_API_KEY=你的 DeepSeek API Key
 ./mvnw spring-boot:run \
   -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication
 ```
@@ -74,7 +89,6 @@ MANAGER_APPROVAL_REQUIRED
 
 ```text
 client/McpAgentDemoClientApplication.java
-client/TravelExpenseAgentModel.java
 ```
 
 关键写法是：
