@@ -1,9 +1,30 @@
 spring:
   application:
     name: springai-deepseek-demo
+
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
   ai:
+    model:
+      chat: deepseek
+      embedding: ollama
+
     deepseek:
       api-key: ${DEEPSEEK_API_KEY:dummy-key}
       chat:
         model: deepseek-v4-flash
-        temperature: 0.2
+
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        model: bge-m3
+
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        distance-type: COSINE_DISTANCE
+        dimensions: 1024
+        max-document-batch-size: 10000

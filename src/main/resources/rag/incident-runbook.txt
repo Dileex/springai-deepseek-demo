@@ -1,0 +1,44 @@
+id: INCIDENT-001
+system: incident
+status: published
+category: payment
+
+支付接口偶发 500，先拿 traceId 查应用日志，不要一上来就让用户重新支付。
+日志里如果是 gateway timeout、read timed out 这一类超时，先看支付网关耗时和重试次数，再看订单状态有没有回写成功。
+最近半小时有过发布的话，把支付签名、回调地址、商户配置这几项一起过一遍，支付问题经常出在配置变更后。
+确认上一笔支付没有生成流水之前，不要引导用户重复下单。
+5 分钟内同类错误超过 20 次，带上 traceId、订单号、支付流水号升级给值班负责人。
+
+---
+id: INCIDENT-002
+system: incident
+status: published
+category: database
+
+连接池打满时，先看 active、idle、waiting 三个指标，再翻连接池超时日志。
+active 长时间贴着 max pool size，通常不是简单把池子调大就完事。先查慢 SQL、长事务，还有连接有没有正常释放。
+慢 SQL 先看执行计划和扫描行数，尤其是最近改过查询条件或新增排序的接口。
+临时扩容连接池可以救急，但要盯住数据库 CPU、IO 和锁等待，别把压力直接推到数据库上。
+看到 lock wait 或 deadlock，先找持锁 SQL。该回滚发布还是该降级功能，等锁源头确认后再定。
+
+---
+id: INCIDENT-003
+system: incident
+status: published
+category: timeout
+
+接口超时不要先猜代码慢。先看调用链，把耗时拆到 Controller、Service、数据库和外部接口几个段上。
+耗时集中在下游服务时，看下游错误率、P95/P99 和最近发布记录；只看平均耗时很容易漏掉长尾。
+耗时卡在线程池排队时，看队列长度、拒绝次数和单个任务执行时间，必要时把慢请求样本捞出来单独看。
+只有少量用户偶发超时，重点看时间段、用户范围、请求参数和 traceId，很多时候是某类数据把路径打慢了。
+
+---
+id: INCIDENT-004
+system: incident
+status: internal
+category: permission
+
+应急预案只对值班同学开放，普通研发默认只能查看通用排查手册。
+降级开关、限流阈值、支付通道切换、批量补偿任务，都要值班负责人确认后再操作。
+没有对应权限的用户，只返回通用排查建议，不暴露内部开关名称、后台地址和操作口令。
+高风险操作要记录操作人、确认人、影响范围和回滚方式，方便事后复盘。
