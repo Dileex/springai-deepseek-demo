@@ -13,10 +13,10 @@ src/              Spring Boot 4.1.0 MCP Server
 mcp-agent-demo/   Spring AI 2.0.0 Agent Client
 ```
 
-根项目把 Java 方法 `checkLodgingPolicy` 暴露成 MCP Tool：
+根项目把 Java 方法 `queryOrderSnapshot` 暴露成 MCP Tool：
 
 ```text
-check_lodging_policy
+query_order_snapshot
 ```
 
 `mcp-agent-demo` 只负责连接这个 MCP Server，把远端工具转成 `ToolCallbackProvider`，再通过：
@@ -29,6 +29,10 @@ chatClient.prompt("...")
 ```
 
 让 Agent 侧使用工具。
+
+Agent 的 system prompt、用户问题模板、默认问题和期望工具名放在 `mcp-agent-demo/src/main/resources/application.yaml` 的 `demo.agent` 下。
+
+Java 代码只负责装配 `ChatClient`、接入工具，并通过 `/ask` 暴露一个可访问接口。
 
 Client 侧使用 DeepSeek：
 
@@ -56,12 +60,6 @@ cd /Users/dilee/Projects/springai-deepseek-demo
 http://localhost:8080/mcp
 ```
 
-如果 `8080` 被占用：
-
-```bash
-./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=18080
-```
-
 ## 2. 启动 Agent Client
 
 默认连接 `http://localhost:8080/mcp`：
@@ -74,25 +72,38 @@ export DEEPSEEK_API_KEY=你的 DeepSeek API Key
   -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication
 ```
 
-如果 Server 跑在 `18080`：
+正常启动后，Client 会监听：
+
+```text
+http://localhost:8081
+```
+
+启动日志会包含：
+
+```text
+Spring AI tools: [query_order_snapshot]
+```
+
+访问 `/ask`：
 
 ```bash
-./mvnw spring-boot:run \
-  -Dspring-boot.run.main-class=com.example.mcpagent.client.McpAgentDemoClientApplication \
-  -Dspring-boot.run.arguments=--spring.ai.mcp.client.streamable-http.connections.travel-expense.url=http://localhost:18080
+curl -X POST "http://localhost:8081/ask" \
+  -H "Content-Type: text/plain" \
+  --data-binary '我的订单 ORDER-20260621-1001 怎么还没到？能帮我催一下吗？'
 ```
 
-正常输出会包含：
+MCP Server 侧会看到工具调用日志：
 
 ```text
-Spring AI tools: [check_lodging_policy]
-Spring AI agent result: 我已经通过 MCP 工具 check_lodging_policy 查询了差旅住宿规则。
+queryOrderSnapshot tool called, orderNo=ORDER-20260621-1001
 ```
 
-最终回答里会包含：
+接口会返回：
 
-```text
-MANAGER_APPROVAL_REQUIRED
+```json
+{
+  "answer": "您的订单已发货，顺丰单号 SF1234567890，目前已到达上海浦东集散中心..."
+}
 ```
 
 这里不是本地模拟模型。

@@ -1,19 +1,19 @@
 spring:
   application:
-    name: travel-expense-mcp-server
+    name: order-service-mcp-server
   ai:
     mcp:
       client:
         enabled: false
       server:
-        name: travel-expense-mcp-server
+        name: order-service-mcp-server
         version: 1.0.0
         type: SYNC
         protocol: STREAMABLE
         instructions: |
-          这是一个差旅报销 MCP Server。
-          它只用于查询报销政策、检查材料和判断是否需要审批。
-          不要用它执行真实付款、审批通过或权限变更。
+          这是一个订单客服 MCP Server。
+          它只用于根据订单号查询订单状态、物流进度和售后处理建议。
+          不要用它执行退款、取消订单、修改地址或其他写操作。
         capabilities:
           tool: true
           resource: false

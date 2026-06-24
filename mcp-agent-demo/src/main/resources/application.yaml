@@ -1,12 +1,11 @@
 spring:
   application:
-    name: travel-expense-mcp-agent-client
+    name: order-service-mcp-agent-client
   ai:
     deepseek:
       api-key: ${DEEPSEEK_API_KEY}
       chat:
         model: deepseek-v4-flash
-        temperature: 0.2
     mcp:
       client:
         enabled: true
@@ -15,6 +14,23 @@ spring:
           enabled: true
         streamable-http:
           connections:
-            travel-expense:
+            order-service:
               url: http://localhost:8080
               endpoint: /mcp
+
+server:
+  port: 8081
+
+demo:
+  agent:
+    expected-tool-name: query_order_snapshot
+    system-prompt: |
+      你是一个电商客服助手。
+      回答用户订单问题前，必须先使用 query_order_snapshot 查询订单状态。
+      回答要基于工具返回的订单状态、物流进度和售后规则，不要编造物流信息。
+    user-prompt-template: |
+      用户问题：%s
+
+      请先判断是否需要查询订单。
+      如果问题里包含订单号，请先调用工具查询订单，再用客服口吻回答。
+    default-question: 我的订单 ORDER-20260621-1001 怎么还没到？能帮我催一下吗？
