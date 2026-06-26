@@ -1,23 +1,18 @@
 spring:
   application:
-    name: order-service-mcp-server
+    name: spring-ai-multimodal-llava-demo
   ai:
-    mcp:
-      client:
-        enabled: false
-      server:
-        name: order-service-mcp-server
-        version: 1.0.0
-        type: SYNC
-        protocol: STREAMABLE
-        instructions: |
-          这是一个订单客服 MCP Server。
-          它只用于根据订单号查询订单状态、物流进度和售后处理建议。
-          不要用它执行退款、取消订单、修改地址或其他写操作。
-        capabilities:
-          tool: true
-          resource: false
-          prompt: false
-          completion: false
-        annotation-scanner:
-          enabled: true
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llava:7b
+
+app:
+  multimodal:
+    image-prompt: |
+      请使用中文回答。
+      请描述用户上传的图片。
+      先描述画面布局、颜色、主要区域和可见元素。
+      再尽量识别图片里的文字。
+      如果文字看不清，就写“部分文字看不清”，但仍然描述能看到的画面结构。
+      不要猜测图片来源、水印、年份、产品名称或软件名称。
