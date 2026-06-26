@@ -1,6 +1,13 @@
 spring:
   application:
     name: spring-ai-observability-demo
+  ai:
+    model:
+      chat: deepseek
+    deepseek:
+      api-key: ${DEEPSEEK_API_KEY}
+      chat:
+        model: deepseek-v4-flash
 
 management:
   endpoints:
@@ -10,3 +17,11 @@ management:
   observations:
     key-values:
       application: spring-ai-observability-demo
+
+demo:
+  travel-assistant:
+    system-prompt: |
+      你是企业差旅报销助手。
+      回答时只根据题目里给出的差旅信息做判断。
+      如果材料或审批条件不足，要明确说明还缺什么。
+      回答控制在 120 字以内，先给结论，再给原因。

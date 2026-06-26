@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spring AI Observability</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --blue: #2563eb;
+      --green: #16875d;
+      --orange: #c26a13;
+      --red: #c2413a;
+      --shadow: 0 12px 32px rgba(25, 37, 66, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 18px;
+      min-height: 142px;
+    }
+
+    .label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .dot.green {
+      background: var(--green);
+    }
+
+    .dot.orange {
+      background: var(--orange);
+    }
+
+    .dot.red {
+      background: var(--red);
+    }
+
+    .value {
+      font-variant-numeric: tabular-nums;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 0;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-note {
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow-node {
+      display: grid;
+      grid-template-columns: 18px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .flow-node.child {
+      margin-left: 28px;
+    }
+
+    .flow-node.grandchild {
+      margin-left: 56px;
+    }
+
+    .flow-line {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .flow-line.green {
+      background: var(--green);
+    }
+
+    .flow-line.orange {
+      background: var(--orange);
+    }
+
+    .flow-title {
+      font-weight: 800;
+    }
+
+    .flow-desc {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .flow-value {
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .delta {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f0f5ff;
+      color: #27416f;
+      font-size: 14px;
+    }
+
+    .answer {
+      white-space: pre-wrap;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 88px;
+      background: #fbfcff;
+      color: #263449;
+    }
+
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-node,
+      .flow-node.child,
+      .flow-node.grandchild {
+        margin-left: 0;
+        grid-template-columns: 14px 1fr;
+      }
+
+      .flow-value {
+        grid-column: 2;
+      }
+    }
+
+    @media (max-width: 520px) {
+      main {
+        width: min(100% - 20px, 1120px);
+        margin: 20px auto;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Spring AI Observability</h1>
+      <p>把一次 AI 调用拆成 ChatClient、Advisor、ChatModel 和 token usage。</p>
+    </div>
+    <button id="runButton" type="button">调用一次 DeepSeek</button>
+  </header>
+
+  <section class="grid" aria-label="核心指标">
+    <article class="card">
+      <div class="label"><span class="dot"></span>ChatClient 总耗时</div>
+      <div class="value" id="chatClientValue">0 ms</div>
+      <div class="hint" id="chatClientHint">还没有调用记录</div>
+    </article>
+    <article class="card">
+      <div class="label"><span class="dot green"></span>ChatModel 耗时</div>
+      <div class="value" id="chatModelValue">0 ms</div>
+      <div class="hint" id="chatModelHint">真实模型调用耗时</div>
+    </article>
+    <article class="card">
+      <div class="label"><span class="dot orange"></span>Token 总量</div>
+      <div class="value" id="tokenValue">0</div>
+      <div class="hint" id="tokenHint">input 0 / output 0</div>
+    </article>
+    <article class="card">
+      <div class="label"><span class="dot red"></span>Advisor 层数</div>
+      <div class="value" id="advisorValue">0</div>
+      <div class="hint" id="advisorHint">经过的 Advisor 指标</div>
+    </article>
+  </section>
+
+  <section class="panel" aria-label="调用链路耗时">
+    <h2>调用链路耗时</h2>
+    <p class="flow-note">这不是三段相加。ChatClient 是外层总耗时，Advisor 是中间处理链路，ChatModel 是里面真实请求模型的耗时。</p>
+    <div class="flow">
+      <div class="flow-node">
+        <span class="flow-line"></span>
+        <div>
+          <div class="flow-title">ChatClient</div>
+          <div class="flow-desc">一次 AI 调用的整体耗时</div>
+        </div>
+        <span class="flow-value" id="chatClientFlowValue">0 ms</span>
+      </div>
+      <div class="flow-node child">
+        <span class="flow-line orange"></span>
+        <div>
+          <div class="flow-title">Advisor</div>
+          <div class="flow-desc" id="advisorFlowDesc">调用前后的处理链路</div>
+        </div>
+        <span class="flow-value" id="advisorFlowValue">0 ms</span>
+      </div>
+      <div class="flow-node grandchild">
+        <span class="flow-line green"></span>
+        <div>
+          <div class="flow-title">ChatModel</div>
+          <div class="flow-desc">真正请求 DeepSeek 的模型层耗时</div>
+        </div>
+        <span class="flow-value" id="chatModelFlowValue">0 ms</span>
+      </div>
+    </div>
+    <div class="delta" id="flowDelta">先触发一次调用，再看 ChatClient 和 ChatModel 的差值。</div>
+  </section>
+
+  <section class="panel" aria-label="模型回答">
+    <h2>最近一次回答</h2>
+    <div class="answer" id="answerBox">点击上方按钮，先触发一次真实模型调用。</div>
+    <div class="footer">原始 Prometheus 指标仍在 /actuator/prometheus，这个页面只是把关键指标整理成人能看的版本。</div>
+  </section>
+</main>
+
+<script>
+  const question = '上海住宿费720元，有发票和行程单，可以直接报销吗？';
+  const runButton = document.querySelector('#runButton');
+  const answerBox = document.querySelector('#answerBox');
+
+  const fmtMs = (value) => `${Math.round(value || 0)} ms`;
+  const fmtInt = (value) => Math.round(value || 0).toLocaleString('zh-CN');
+
+  function setText(id, text) {
+    document.querySelector(id).textContent = text;
+  }
+
+  async function loadSummary() {
+    const res = await fetch('/observability/summary');
+    const data = await res.json();
+
+    const chatClient = data.chatClient || {};
+    const chatModel = data.chatModel || {};
+    const advisors = data.advisors || [];
+    const tokenUsage = data.tokenUsage || {};
+    const advisorMax = advisors.reduce((max, item) => Math.max(max, item.maxMillis || 0), 0);
+    const overhead = Math.max(0, (chatClient.maxMillis || 0) - (chatModel.maxMillis || 0));
+
+    setText('#chatClientValue', fmtMs(chatClient.maxMillis));
+    setText('#chatClientHint', `调用 ${chatClient.count || 0} 次 / 累计 ${fmtMs(chatClient.totalMillis)}`);
+    setText('#chatModelValue', fmtMs(chatModel.maxMillis));
+    setText('#chatModelHint', `调用 ${chatModel.count || 0} 次 / 累计 ${fmtMs(chatModel.totalMillis)}`);
+    setText('#tokenValue', fmtInt(tokenUsage.total));
+    setText('#tokenHint', `input ${fmtInt(tokenUsage.input)} / output ${fmtInt(tokenUsage.output)}`);
+    setText('#advisorValue', advisors.length.toString());
+    setText('#advisorHint', advisors.length ? advisors.map(item => item.name).join('、') : '还没有 Advisor 指标');
+
+    setText('#chatClientFlowValue', fmtMs(chatClient.maxMillis));
+    setText('#advisorFlowValue', fmtMs(advisorMax));
+    setText('#chatModelFlowValue', fmtMs(chatModel.maxMillis));
+    setText('#advisorFlowDesc', advisors.length
+      ? `经过：${advisors.map(item => item.name).join('、')}`
+      : '调用前后的处理链路');
+    setText('#flowDelta', `粗看这次调用：总耗时 ${fmtMs(chatClient.maxMillis)}，模型层 ${fmtMs(chatModel.maxMillis)}，外层差值约 ${fmtMs(overhead)}。差值通常来自 Advisor、上下文组装、业务代码和框架处理。`);
+  }
+
+  async function runDemo() {
+    runButton.disabled = true;
+    runButton.textContent = '调用中...';
+    answerBox.textContent = '正在请求 DeepSeek...';
+    try {
+      const res = await fetch(`/travel/ask?question=${encodeURIComponent(question)}`);
+      const data = await res.json();
+      answerBox.textContent = `问题：${data.question}\n\n回答：${data.answer}\n\n接口耗时：${data.elapsedMillis} ms`;
+      await loadSummary();
+    }
+    catch (error) {
+      answerBox.textContent = `调用失败：${error.message}\n\n请确认已经配置 DEEPSEEK_API_KEY。`;
+    }
+    finally {
+      runButton.disabled = false;
+      runButton.textContent = '调用一次 DeepSeek';
+    }
+  }
+
+  runButton.addEventListener('click', runDemo);
+  loadSummary().catch(() => {
+    answerBox.textContent = '指标暂时不可用，请确认应用已经启动。';
+  });
+</script>
+</body>
+</html>
