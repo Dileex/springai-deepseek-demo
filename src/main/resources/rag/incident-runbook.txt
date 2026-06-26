@@ -1,4 +1,4 @@
-id: INCIDENT-001
+logicalId: INCIDENT-001
 system: incident
 status: published
 category: payment
@@ -10,7 +10,7 @@ category: payment
 5 分钟内同类错误超过 20 次，带上 traceId、订单号、支付流水号升级给值班负责人。
 
 ---
-id: INCIDENT-002
+logicalId: INCIDENT-002
 system: incident
 status: published
 category: database
@@ -22,7 +22,7 @@ active 长时间贴着 max pool size，通常不是简单把池子调大就完�
 看到 lock wait 或 deadlock，先找持锁 SQL。该回滚发布还是该降级功能，等锁源头确认后再定。
 
 ---
-id: INCIDENT-003
+logicalId: INCIDENT-003
 system: incident
 status: published
 category: timeout
@@ -33,7 +33,7 @@ category: timeout
 只有少量用户偶发超时，重点看时间段、用户范围、请求参数和 traceId，很多时候是某类数据把路径打慢了。
 
 ---
-id: INCIDENT-004
+logicalId: INCIDENT-004
 system: incident
 status: internal
 category: permission

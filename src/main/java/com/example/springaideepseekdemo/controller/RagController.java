@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,7 +48,7 @@ public class RagController {
     }
 
     @GetMapping("/search")
-    public SearchResponse search(@RequestParam(defaultValue = "支付接口偶发 500，应该先看什么？") String question) {
+    public SearchResponse search(@RequestParam(defaultValue = "分析支付错误") String question) {
         List<Document> documents = retrieve(question);
         return new SearchResponse(question, documents.stream()
                 .map(DocumentItem::from)
@@ -55,7 +56,7 @@ public class RagController {
     }
 
     @GetMapping("/ask")
-    public AskResponse ask(@RequestParam(defaultValue = "支付接口偶发 500，应该先看什么？") String question) {
+    public AskResponse ask(@RequestParam(defaultValue = "分析支付错误") String question) {
         List<Document> documents = retrieve(question);
         String context = documents.stream()
                 .map(Document::getText)
@@ -108,9 +109,10 @@ public class RagController {
         }
 
         Map<String, Object> metadata = parseMetadata(parts[0]);
-        String id = metadata.remove("id").toString();
+        String logicalId = metadata.remove("logicalId").toString();
+        metadata.put("logicalId", logicalId);
         String text = parts[1].trim();
-        return new Document(id, text, metadata);
+        return new Document(UUID.nameUUIDFromBytes(logicalId.getBytes(StandardCharsets.UTF_8)).toString(), text, metadata);
     }
 
     private Map<String, Object> parseMetadata(String metadataText) {
