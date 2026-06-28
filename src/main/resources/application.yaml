@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-ai-loop-engineering-demo
+    name: spring-ai-loop-engineering-agent
   ai:
     deepseek:
       api-key: ${DEEPSEEK_API_KEY}
@@ -26,6 +26,9 @@ app:
         - 使用 Markdown。
         - 结构固定为：总体结论、证据、可能原因、排查步骤、下一步建议。
         - 在“证据”里列出你用到的日志片段或工具结果。
+        - 总体结论要区分“已确认事实”和“推测判断”。
+        - 没有直接证据时，不要写“确定由某次发布导致”“并非偶发问题”“必然复现”等绝对结论。
+        - 可以写“高度怀疑”“更可能”“需要继续确认”，但要说明依据。
         - 不要编造日志里不存在的信息；如果证据不足，明确说明缺少哪些上下文。
         - 不要建议直接重启服务，除非证据能说明这是合理的临时止血动作。
       user-template: |

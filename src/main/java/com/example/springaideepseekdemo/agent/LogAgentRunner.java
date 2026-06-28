@@ -34,6 +34,9 @@ public class LogAgentRunner {
 	public AgentRunResult run(AgentRunRequest request) {
 		List<AgentEvent> events = new ArrayList<>();
 		events.add(new AgentEvent("RECEIVED_INPUT", "收到日志分析请求，sessionId=" + request.sessionId()));
+		LogTaskSignal signal = LogTaskSignal.from(request.input());
+		events.add(new AgentEvent("TASK_DISCOVERED", signal.summary()));
+		events.add(new AgentEvent("ACTIONS_PLANNED", "计划动作：" + signal.plannedActions()));
 
 		String feedback = "";
 		String answer = "";
@@ -100,11 +103,21 @@ public class LogAgentRunner {
 			missing.add("没有引用 UserContext 这个关键类");
 		}
 
+		if (containsUnsupportedConclusion(answer)) {
+			missing.add("把推测写成了确定结论，需要区分已确认事实和推测判断");
+		}
+
 		if (missing.isEmpty()) {
 			return new VerificationResult(true, "回答覆盖了关键结论、证据和下一步建议");
 		}
 
 		return new VerificationResult(false, "校验未通过：" + String.join("；", missing));
+	}
+
+	private boolean containsUnsupportedConclusion(String answer) {
+		return answer.contains("并非偶发")
+				|| answer.contains("必然复现")
+				|| answer.contains("本次故障由 order-service 当天发布的代码变更导致");
 	}
 
 	private String extractTraceId(String logText) {
