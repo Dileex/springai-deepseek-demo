@@ -82,12 +82,15 @@ curl --get "http://localhost:8080/rag/search" \
   "question": "支付接口偶发500应该先看什么",
   "matches": [
     {
-      "id": "INCIDENT-001",
-      "text": "支付接口偶发 500 时，先根据 traceId 查询错误日志，再确认最近发布记录和下游支付网关是否超时。",
+      "id": "9ee4017f-b2aa-35c3-a794-33c7fa6ae6a6",
+      "text": "支付接口偶发 500，先拿 traceId 查应用日志，不要一上来就让用户重新支付。",
+      "score": 0.7104,
       "metadata": {
         "system": "incident",
+        "category": "payment",
+        "logicalId": "INCIDENT-001",
         "status": "published",
-        "category": "payment"
+        "distance": 0.2895
       }
     }
   ]
@@ -95,6 +98,8 @@ curl --get "http://localhost:8080/rag/search" \
 ```
 
 这里的结果来自 PgVector 相似度检索，不是 DeepSeek 直接生成。
+
+这里的 `id` 是写入 PgVector 的稳定 UUID，方便数据库存储和更新；人读起来更直观的业务编号放在 `metadata.logicalId` 里。
 
 ## 检索后生成回答
 
