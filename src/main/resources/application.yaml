@@ -2,6 +2,8 @@ spring:
   application:
     name: spring-ai-error-fallback-demo
   ai:
+    tools:
+      throw-exception-on-error: true
     retry:
       max-attempts: 3
       backoff:
@@ -9,8 +11,6 @@ spring:
         multiplier: 2
         max-interval: 10s
       on-client-errors: false
-    tools:
-      throw-exception-on-error: true
     deepseek:
       api-key: ${DEEPSEEK_API_KEY}
       chat:
@@ -21,12 +21,10 @@ app:
   policy:
     system-prompt: |
       你是一个企业内部制度问答助手。
-      回答制度问题前，必须调用 searchPolicyByQuestion 工具查询制度片段。
+      回答制度问题前，必须先调用 searchPolicyByQuestion 查询制度片段。
       只能基于工具返回的制度片段回答。
       如果没有查到明确制度，要说明不能确认，并建议转人工确认。
       不要编造制度条款，不要暴露内部异常栈。
     user-template: |
       请回答下面这个制度问题。
-
-      问题：
       {question}

@@ -6,6 +6,7 @@ import com.example.springaideepseekdemo.tool.PolicyLookupTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.tool.execution.ToolExecutionException;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 @Component
 public class DeepSeekPolicyModelClient implements PolicyModelClient {
@@ -24,15 +25,16 @@ public class DeepSeekPolicyModelClient implements PolicyModelClient {
 	}
 
 	@Override
-	public String answer(String question) {
+	public Flux<String> streamAnswer(String question) {
 		String userPrompt = properties.userTemplate().replace("{question}", question);
 
-		try {
-			return chatClient.prompt().user(userPrompt).tools(policyLookupTool).call().content();
-		}
-		catch (ToolExecutionException ex) {
-			throw new PolicyToolFailureException("Policy lookup tool failed", ex);
-		}
+		return chatClient.prompt()
+			.user(userPrompt)
+			.tools(policyLookupTool)
+			.stream()
+			.content()
+			.onErrorMap(ToolExecutionException.class,
+					ex -> new PolicyToolFailureException("Policy lookup tool failed", ex));
 	}
 
 }

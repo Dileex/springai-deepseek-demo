@@ -12,15 +12,15 @@ Spring AI 2.0.0 错误兜底实战：别让 AI 接口失败时只剩 500
 article/015-error-fallback
 ```
 
-这个示例实现的是一个内部制度问答接口：
+这个示例实现的是一个流式内部制度问答接口：
 
 ```text
 用户提交制度问题
--> PolicyAskController 接收请求
--> PolicyAnswerService 统一处理成功、空回答、模型异常、工具异常
--> DeepSeekPolicyModelClient 调用 ChatClient
--> PolicyLookupTool 提供制度片段
--> 接口返回稳定的 PolicyAnswer，而不是直接把异常变成 500
+-> PolicyAskController 暴露 SSE 接口
+-> PolicyAnswerService 把成功片段和失败兜底都包装成 PolicyStreamEvent
+-> DeepSeekPolicyModelClient 使用 ChatClient.tools(...).stream().content()
+-> PolicyLookupTool 作为 Spring AI Tool 被模型调用
+-> 出错时返回 FALLBACK 事件，而不是让流直接断掉或变成 500
 ```
 
 ## 运行环境
@@ -51,72 +51,70 @@ export DEEPSEEK_API_KEY=你的 DeepSeek API Key
 ./mvnw spring-boot:run
 ```
 
-## 请求接口
+## 流式请求
 
 ```bash
-curl "http://localhost:8080/policy/ask?question=出差回来后报销需要哪些材料"
+curl -N --get "http://localhost:8080/policy/ask" \
+  --data-urlencode "question=出差回来后报销需要哪些材料"
 ```
 
-成功时返回结构类似：
+`-N` 关闭 curl 缓冲，方便看到 SSE 逐段返回。
 
-```json
-{
-  "success": true,
-  "answer": "根据制度片段，出差报销需要在返程后 7 个自然日内提交，材料包括行程单、发票和付款凭证。",
-  "failureType": null,
-  "retryable": false,
-  "needHumanReview": false
-}
+`--data-urlencode` 会把中文参数做 URL 编码，避免请求还没进 Controller 就被 Web 容器拒掉。
+
+正常内容片段类似：
+
+```text
+data:{"success":true,"type":"CONTENT","content":"根据制度片段，","failureType":null,"retryable":false,"needHumanReview":false}
 ```
 
-如果模型临时不可用，返回结构类似：
+空问题会返回兜底事件：
 
-```json
-{
-  "success": false,
-  "answer": "AI 服务暂时不可用，可以稍后重试。",
-  "failureType": "MODEL_TEMPORARY_FAILURE",
-  "retryable": true,
-  "needHumanReview": false
-}
+```bash
+curl -N "http://localhost:8080/policy/ask"
 ```
 
-如果制度工具失败，返回结构类似：
-
-```json
-{
-  "success": false,
-  "answer": "制度资料服务暂时不可用，建议稍后再试或转人工确认。",
-  "failureType": "POLICY_TOOL_FAILURE",
-  "retryable": true,
-  "needHumanReview": true
-}
+```text
+data:{"success":false,"type":"FALLBACK","content":"问题不能为空，请补充要查询的制度问题。","failureType":"INVALID_REQUEST","retryable":false,"needHumanReview":false}
 ```
+
+工具失败也返回同样结构：
+
+```bash
+curl -N --get "http://localhost:8080/policy/ask" \
+  --data-urlencode "question=资料库故障时怎么处理"
+```
+
+```text
+data:{"success":false,"type":"FALLBACK","content":"制度资料服务暂时不可用，建议稍后再试或转人工确认。","failureType":"POLICY_TOOL_FAILURE","retryable":true,"needHumanReview":true}
+```
+
+当前示例把 4xx 客户端错误按不可重试处理。如果供应商用 `429` 表示临时限流，并且业务上希望短重试，可以按 Spring AI 配置把 `429` 放到 `spring.ai.retry.on-http-codes`。
 
 ## 关键代码
 
 ```text
 src/main/java/com/example/springaideepseekdemo/config/PolicyPromptProperties.java
 src/main/java/com/example/springaideepseekdemo/controller/PolicyAskController.java
-src/main/java/com/example/springaideepseekdemo/dto/PolicyAnswer.java
 src/main/java/com/example/springaideepseekdemo/dto/PolicyFailureType.java
+src/main/java/com/example/springaideepseekdemo/dto/PolicyStreamEvent.java
 src/main/java/com/example/springaideepseekdemo/exception/PolicyToolFailureException.java
 src/main/java/com/example/springaideepseekdemo/model/PolicyModelClient.java
 src/main/java/com/example/springaideepseekdemo/model/DeepSeekPolicyModelClient.java
 src/main/java/com/example/springaideepseekdemo/service/PolicyAnswerService.java
 src/main/java/com/example/springaideepseekdemo/tool/PolicyLookupTool.java
+src/test/java/com/example/springaideepseekdemo/service/PolicyAnswerServiceTests.java
 src/main/resources/application.yaml
 ```
 
 ## 和文章的对应关系
 
-文章里的核心点，对应代码如下：
-
 ```text
-稳定返回结构：PolicyAnswer + PolicyFailureType
-模型调用：DeepSeekPolicyModelClient
-工具调用：PolicyLookupTool + ChatClient.tools(...)
-错误分类：PolicyAnswerService
+流式返回结构：PolicyStreamEvent + PolicyFailureType
+模型调用：DeepSeekPolicyModelClient + ChatClient.tools(...).stream().content()
+资料查询：PolicyLookupTool + @Tool
+错误分类：PolicyAnswerService 里的 FailureRule + FailureDecision
+HTTP 状态分类：401/403 等 4xx 归为不可重试，429/5xx 归为临时失败
 重试配置：spring.ai.retry
-工具异常策略：spring.ai.tools.throw-exception-on-error
+工具异常配置：spring.ai.tools.throw-exception-on-error=true
 ```
