@@ -2,6 +2,7 @@ package com.example.springaideepseekdemo.service;
 
 import com.example.springaideepseekdemo.config.AccessAssistantProperties;
 import com.example.springaideepseekdemo.dto.AccessToolLoopResponse;
+import com.example.springaideepseekdemo.advisor.AccessControlToolCallingAdvisor;
 import com.example.springaideepseekdemo.tool.AccessPolicyTool;
 import com.example.springaideepseekdemo.tool.EmployeeProfileTool;
 import com.example.springaideepseekdemo.tool.ResourceCatalogTool;
@@ -22,16 +23,20 @@ public class AccessToolLoopService {
 
 	private final AccessPolicyTool accessPolicyTool;
 
+	private final AccessControlToolCallingAdvisor accessControlToolCallingAdvisor;
+
 	private final ToolLoopTrace trace;
 
 	public AccessToolLoopService(ChatClient.Builder builder, AccessAssistantProperties properties,
 			EmployeeProfileTool employeeProfileTool, ResourceCatalogTool resourceCatalogTool,
-			AccessPolicyTool accessPolicyTool, ToolLoopTrace trace) {
+			AccessPolicyTool accessPolicyTool, AccessControlToolCallingAdvisor accessControlToolCallingAdvisor,
+			ToolLoopTrace trace) {
 		this.chatClient = builder.defaultSystem(properties.systemPrompt()).build();
 		this.properties = properties;
 		this.employeeProfileTool = employeeProfileTool;
 		this.resourceCatalogTool = resourceCatalogTool;
 		this.accessPolicyTool = accessPolicyTool;
+		this.accessControlToolCallingAdvisor = accessControlToolCallingAdvisor;
 		this.trace = trace;
 	}
 
@@ -44,6 +49,7 @@ public class AccessToolLoopService {
 		try {
 			String answer = chatClient.prompt()
 				.user(userPrompt)
+				.advisors(accessControlToolCallingAdvisor)
 				.tools(employeeProfileTool, resourceCatalogTool, accessPolicyTool)
 				.call()
 				.content();
